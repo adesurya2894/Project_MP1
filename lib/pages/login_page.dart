@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       setState(() {
-        _errorMessage = 'Email atau password salah!!';
+        _errorMessage = 'Email atau password salah!';
       });
     }
   }
