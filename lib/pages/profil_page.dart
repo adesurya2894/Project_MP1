@@ -64,8 +64,14 @@ class _ProfilPageState extends State<ProfilPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: _selectedIndex,
-        onTap: _onNavTap,
+        currentIndex: 2, // karena ini halaman Profil
+        onTap: (index) {
+          if (index == 0) {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/riwayat');
+          }
+        },
       ),
     );
   }

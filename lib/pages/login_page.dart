@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/custom_appbar.dart';
-import '../widgets/custom_drawer.dart';
 import 'home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -38,15 +37,13 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-          const CustomAppBar(title: 'Login'), // ✅ tetap gunakan custom appbar
-      drawer: const CustomDrawer(), // ✅ tampilkan drawer juga
-
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const Text('LOGIN', style: TextStyle(fontSize: 18)),
+            const SizedBox(height: 20),
             const Text('Email', style: TextStyle(fontSize: 16)),
             TextField(
               controller: _emailController,

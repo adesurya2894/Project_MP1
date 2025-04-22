@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'My Super App'),
+      appBar: CustomAppBar(title: 'BSI PAY'),
       drawer: const CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,11 +73,13 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.teal,
       ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: _selectedIndex,
+        currentIndex: 0, // karena halaman ini adalah Home
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          if (index == 1) {
+            Navigator.pushReplacementNamed(context, '/riwayat');
+          } else if (index == 2) {
+            Navigator.pushReplacementNamed(context, '/profil');
+          }
         },
       ),
     );

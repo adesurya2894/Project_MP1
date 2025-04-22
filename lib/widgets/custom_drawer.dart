@@ -13,7 +13,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
-        children: const [
+        children: [
           DrawerHeader(
             decoration: BoxDecoration(color: Colors.blue),
             child: Column(
@@ -47,14 +47,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ListTile(
             leading: Icon(Icons.home),
             title: Text('Beranda'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+          ),
+          ListTile(
+            leading: Icon(Icons.history),
+            title: Text('Riwayat'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/riwayat'),
           ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profil'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/profil'),
           ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Pengaturan'),
+          ),
+          ListTile(
+            leading: Icon(Icons.login),
+            title: Text('Logout'),
+            onTap: () => Navigator.pushReplacementNamed(context, '/login'),
           ),
         ],
       ),
