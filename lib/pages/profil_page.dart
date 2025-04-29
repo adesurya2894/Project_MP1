@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/custom_appbar.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/custom_buttom_nav.dart';
@@ -12,6 +13,26 @@ class ProfilPage extends StatefulWidget {
 
 class _ProfilPageState extends State<ProfilPage> {
   int _selectedIndex = 2; // ✅ Profil = index ke-2
+
+  // Tambahkan variabel untuk data pengguna
+  String _name = '-';
+  String _email = '-';
+  String _phone = '-';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = prefs.getString('registered_name') ?? '-';
+      _email = prefs.getString('registered_email') ?? '-';
+      _phone = prefs.getString('registered_phone') ?? '-';
+    });
+  }
 
   void _onNavTap(int index) {
     setState(() {
@@ -40,20 +61,20 @@ class _ProfilPageState extends State<ProfilPage> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            const ListTile(
-              leading: Icon(Icons.person),
-              title: Text('Nama Lengkap'),
-              subtitle: Text('Giel Pratama'),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Nama Lengkap'),
+              subtitle: Text(_name),
             ),
-            const ListTile(
-              leading: Icon(Icons.email),
-              title: Text('Email'),
-              subtitle: Text('admin@example.com'),
+            ListTile(
+              leading: const Icon(Icons.email),
+              title: const Text('Email'),
+              subtitle: Text(_email),
             ),
-            const ListTile(
-              leading: Icon(Icons.phone),
-              title: Text('Telepon'),
-              subtitle: Text('08522391944'),
+            ListTile(
+              leading: const Icon(Icons.phone),
+              title: const Text('Telepon'),
+              subtitle: Text(_phone),
             ),
             const ListTile(
               leading: Icon(Icons.lock),
@@ -64,14 +85,8 @@ class _ProfilPageState extends State<ProfilPage> {
         ),
       ),
       bottomNavigationBar: CustomBottomNav(
-        currentIndex: 2, // karena ini halaman Profil
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
-          } else if (index == 1) {
-            Navigator.pushReplacementNamed(context, '/riwayat');
-          }
-        },
+        currentIndex: _selectedIndex,
+        onTap: _onNavTap,
       ),
     );
   }

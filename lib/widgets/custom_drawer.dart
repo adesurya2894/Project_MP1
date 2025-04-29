@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({Key? key}) : super(key: key);
@@ -8,6 +9,23 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  String _name = 'Nama';
+  String _email = 'Email';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  void _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = prefs.getString('registered_name') ?? 'Nama';
+      _email = prefs.getString('registered_email') ?? 'Email';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -15,28 +33,28 @@ class _CustomDrawerState extends State<CustomDrawer> {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blue),
+            decoration: const BoxDecoration(color: Colors.blue),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 30,
                   backgroundImage: NetworkImage(
                     'https://i.pravatar.cc/150?img=3',
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
-                  'Giel Pratama',
-                  style: TextStyle(
+                  _name,
+                  style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  'giel@example.com',
-                  style: TextStyle(
+                  _email,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white70,
                   ),
@@ -45,28 +63,44 @@ class _CustomDrawerState extends State<CustomDrawer> {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Beranda'),
+            leading: const Icon(Icons.home),
+            title: const Text('Beranda'),
             onTap: () => Navigator.pushReplacementNamed(context, '/home'),
           ),
           ListTile(
-            leading: Icon(Icons.history),
-            title: Text('Riwayat'),
+            leading: const Icon(Icons.history),
+            title: const Text('Riwayat'),
             onTap: () => Navigator.pushReplacementNamed(context, '/riwayat'),
           ),
           ListTile(
-            leading: Icon(Icons.person),
-            title: Text('Profil'),
+            leading: const Icon(Icons.person),
+            title: const Text('Profil'),
             onTap: () => Navigator.pushReplacementNamed(context, '/profil'),
           ),
           ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Pengaturan'),
+            leading: const Icon(Icons.settings),
+            title: const Text('Pengaturan'),
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Fitur belum tersedia')),
+              );
+            },
           ),
+          const Divider(),
           ListTile(
-            leading: Icon(Icons.login),
-            title: Text('Logout'),
-            onTap: () => Navigator.pushReplacementNamed(context, '/login'),
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () async {
+              final prefs = await SharedPreferences.getInstance();
+              await prefs.clear(); // ✅ Hapus semua data yang tersimpan
+
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/login',
+                (Route<dynamic> route) =>
+                    false, // ✅ Hapus semua route sebelumnya
+              );
+            },
           ),
         ],
       ),
